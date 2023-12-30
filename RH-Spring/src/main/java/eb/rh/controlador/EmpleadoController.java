@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("rh-app")
@@ -27,6 +29,11 @@ public class EmpleadoController {
         //enviamos la info de cada empleado a consola
         empleados.forEach((empleado -> logger.info(empleado.toString())));
         return empleados;
+    }
+    
+    @PostMapping("/empleados")
+    public Empleado guardarEmpleado(@RequestBody Empleado empleado){
+        return empleadoServicio.guardarEmpleado(empleado);
     }
 
 }
