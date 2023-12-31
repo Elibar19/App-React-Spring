@@ -1,5 +1,6 @@
 package eb.rh.controlador;
 
+import eb.rh.excepciones.RecursoNoEncontradoExcepcion;
 import eb.rh.modelo.Empleado;
 import eb.rh.servicio.EmpleadoServicio;
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -34,6 +37,15 @@ public class EmpleadoController {
     @PostMapping("/empleados")
     public Empleado guardarEmpleado(@RequestBody Empleado empleado){
         return empleadoServicio.guardarEmpleado(empleado);
+    }
+    
+    @GetMapping("/empleados/{id}")
+    public ResponseEntity<Empleado> obtenerEmpleadoPorId(@PathVariable Integer id){
+        Empleado empleado = empleadoServicio.buscarEmpleadoPorId(id);
+        if (empleado == null) {
+            throw new RecursoNoEncontradoExcepcion("No se ha encontrado el id: "+id);
+        }
+        return ResponseEntity.ok(empleado);
     }
 
 }
